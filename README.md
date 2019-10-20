@@ -113,6 +113,8 @@ In Firefox go to `about:config` and then change:
 
 `dow.w3c_touch_events.enabled=1`
 
+To avoid double click when single clicking with the touchpad increase `Double click delay` in Settings Universal access
+
 ## Not working
 
 Cameras don't work. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
