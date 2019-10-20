@@ -109,10 +109,10 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to /etc/security/
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
-In Firefox go to about:config and then change:
+In Firefox go to `about:config` and then change:
 
 `dow.w3c_touch_events.enabled=1`
 
-Webcams won't work. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
+Cameras don't work. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
 
 SD card error. It was working with Ubuntu 16. No solution yet
