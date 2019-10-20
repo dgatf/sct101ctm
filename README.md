@@ -28,6 +28,12 @@ MOZ_USE_XINPUT2 DEFAULT=1
 Firefox about:config
 dow.w3c_touch_events.enabled=1
 
-7.Webcams wont work
+8.Webcams wont work
 
-8.SD card error
+9.SD card error
+
+10.Keyboard. Missing keys
+< Shift+AltGr+Z
+> Shift+AltGr+X
+Esc Ctrl+AltGr+`
+
