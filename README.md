@@ -1,6 +1,6 @@
 # Install Ubuntu 19.04 on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu
+This document describes the process to install Ubuntu 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO
 
 ## Prepare the ISO in a USB stick on a Ubuntu installation
 
@@ -38,21 +38,24 @@ Wifi, bluetooth and audio works out of the box. For the touchscreen it is needed
 
 Copy [silead_ts.fw](touchscreen/silead_ts.fw) to /lib/firmware
 
-10.Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. You can test it with `insmod gslx680_ts_acpi.ko`. You may need to recompile for different kernels
+Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. You can test it with `insmod gslx680_ts_acpi.ko`. You may need to recompile for different kernels
 
 To do this permanent:
 
-`sudo cp gslx680_ts_acpi.ko /lib/modules/$(uname -r)/
-
+```
+sudo cp gslx680_ts_acpi.ko /lib/modules/$(uname -r)/
 sudo nano /etc/modules-load.d/gslx680_ts_acpi.conf
+
  gslx680_ts_acpi
 
-sudo depmod`
-
+sudo depmod
+```
 To test:
-`sudo modprobe gslx680_ts_acpi)
-lsmod | grep gslx680_ts_acpi`
 
+```
+sudo modprobe gslx680_ts_acpi)
+lsmod | grep gslx680_ts_acpi
+```
 ### Kernel driver silead_ts (the hard way recommended)
 
 Todo
@@ -61,14 +64,17 @@ Todo
 
 To fix wrong screen orientation create a udev rule for the sensor in the file /etc/udev/hwdb.d/61-sensor-local.hwdb
 
-`sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
-
- ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1`
+```
+sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
+ ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1
+```
 
 Update udev rules:
 
-`sudo systemd-hwdb update
-sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0`
+```
+sudo systemd-hwdb update
+sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
+```
 
 Shutdown and power on
 
@@ -77,14 +83,16 @@ Shutdown and power on
 
 Bluetooth won't work after suspend. To fix this it is needed to run a script after suspend:
 
-'sudo nano /usr/lib/pm-utils/sleep.d/99bluetooth
+```
+sudo nano /usr/lib/pm-utils/sleep.d/99bluetooth
 
  #!/bin/sh  
  case "$1" in  
   resume)  
    rfkill block 2  
    rfkill unblock 2  
- esac'
+ esac
+```
 
 ## Other tweaks and fixes
 
@@ -103,7 +111,7 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to /etc/security/
 
 In Firefox go to about:config and then change:
 
-dow.w3c_touch_events.enabled=1
+`dow.w3c_touch_events.enabled=1`
 
 Webcams won't work. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
 
