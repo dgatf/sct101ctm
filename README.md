@@ -1,4 +1,4 @@
-#Install Ubuntu 19.04 on Schneider SCT101CTM
+# Install Ubuntu 19.04 on Schneider SCT101CTM
 
 This document describes the process to install Ubuntu 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu
 
