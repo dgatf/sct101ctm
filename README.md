@@ -22,6 +22,12 @@ rfkill unblock 2
 
 6.Screen rotation
 
+7.Touchscreen Scrolling firefox
+/etc/security/pam_env.conf
+MOZ_USE_XINPUT2 DEFAULT=1
+Firefox about:config
+dow.w3c_touch_events.enabled=1
+
 7.Webcams wont work
 
 8.SD card error
