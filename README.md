@@ -38,7 +38,7 @@ Wifi, bluetooth and audio works out of the box. For the touchscreen it is needed
 
 Copy [silead_ts.fw](touchscreen/silead_ts.fw) to /lib/firmware
 
-Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. Test the module with `insmod gslx680_ts_acpi.ko`. You may need to recompile for different kernels
+Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. Test the module with `sudo insmod gslx680_ts_acpi.ko`. You need to recompile for different kernels
 
 To do this permanent:
 
@@ -67,7 +67,7 @@ Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/
 
 ## Fix screen rotation
 
-To fix screen orientation create a udev rule for the accelerometer sensor in the file /etc/udev/hwdb.d/61-sensor-local.hwdb
+To fix screen orientation create a udev rule for the accelerometer sensor in /etc/udev/hwdb.d/61-sensor-local.hwdb
 
 ```
 sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
