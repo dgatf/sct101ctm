@@ -59,11 +59,28 @@ lsmod | grep gslx680_ts_acpi
 ```
 ### Kernel driver silead_ts (the hard way recommended)
 
-Download the kernel, apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c*, compile and install. The patch is for kernel 5.3
+Delete file */etc/modules-load.d/gslx680_ts_acpi.conf* if created
 
-To compile the kernel you can follow instructions [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
+Download the [kernel](https://www.kernel.org/)
 
-Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/firmware/silead*
+Apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c*
+
+`patch touchscreen_dmi.patch.c < touchscreen_dmi.patch`
+
+General instructions to compile the kernel [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
+
+It can be built on the Schneider with minimum modules
+
+Copy this [.config](kernel/.config) to the kernel sources upper folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
+
+Then build and install:
+
+```
+make
+make install_modules
+make install
+```
+Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/firmware/silead/*
 
 ## Fix screen rotation
 
