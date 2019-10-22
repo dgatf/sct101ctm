@@ -59,7 +59,7 @@ lsmod | grep gslx680_ts_acpi
 ```
 ### Kernel driver silead_ts (the hard way recommended)
 
-Download the kernel, apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c* and compile. The patch is for kernel 5.3
+Download the kernel, apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c*, compile and install. The patch is for kernel 5.3
 
 To compile the kernel you can follow instructions [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
 
