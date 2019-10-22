@@ -65,7 +65,7 @@ Download the [kernel](https://www.kernel.org/)
 
 Apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c*
 
-`patch touchscreen_dmi.patch.c < touchscreen_dmi.patch`
+`patch touchscreen_dmi.c < touchscreen_dmi.patch`
 
 General instructions to compile the kernel [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
 
