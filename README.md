@@ -6,7 +6,7 @@ This document describes the process to install Ubuntu 19.04 on Schneider SCT101C
 
 Download [ubuntu-19.10-desktop-amd64.iso](https://ubuntu.com/download/desktop/thank-you?country=ES&version=19.10&architecture=amd64)
 
-Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader we use install [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
+Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
 
 Create linuxium-ubuntu-19.04-desktop-amd64.iso:
 
@@ -54,7 +54,7 @@ sudo depmod
 To test the installed module:
 
 ```
-sudo modprobe gslx680_ts_acpi)
+sudo modprobe gslx680_ts_acpi
 lsmod | grep gslx680_ts_acpi
 ```
 ### Kernel driver silead_ts (the hard way recommended)
@@ -67,7 +67,7 @@ Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/
 
 ## Fix screen rotation
 
-To fix wrong screen orientation create a udev rule for the sensor in the file /etc/udev/hwdb.d/61-sensor-local.hwdb
+To fix screen orientation create a udev rule for the accelerometer sensor in the file /etc/udev/hwdb.d/61-sensor-local.hwdb
 
 ```
 sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
