@@ -71,7 +71,7 @@ General instructions to compile the kernel [here](https://www.cyberciti.biz/tips
 
 It can be built on the Schneider with minimum modules increasing free ram
 
-Copy [.config](kernel/.config) to the kernel sources upper folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
+Copy [.config](kernel/.config) to the kernel sources top folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
 
 Then build and install:
 
