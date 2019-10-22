@@ -123,6 +123,6 @@ To avoid double click when single clicking with the touchpad increase `Double cl
 
 ## Not working
 
-Cameras don't work. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
+Cameras (ov2680) don't work. Camera driver ov2680 is available with the kernel, needs to be activated though. The issue is the atomISP driver. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
 
 SD card error. It was working with Ubuntu 16. No solution yet
