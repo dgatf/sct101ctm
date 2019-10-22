@@ -16,7 +16,7 @@ Copy the iso to USB stick with Startup Disk Creator
 
 ## Change UEFI boot order in Windows on Schneider
 
-Boot Windows 10 and insert USB stick with the ISO 
+Boot Windows 10 and insert USB stick with the ISO
 
 Open a terminal window with cmd and reboot into UEFI:
 
@@ -38,19 +38,20 @@ Wifi, bluetooth and audio works out of the box. For the touchscreen it is needed
 
 Copy [silead_ts.fw](touchscreen/silead_ts.fw) to /lib/firmware
 
-Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. You can test it with `insmod gslx680_ts_acpi.ko`. You may need to recompile for different kernels
+Compile the driver [gslx680_ts_acpi](https://github.com/onitake/gslx680-acpi) to obtain gslx680_ts_acpi.ko. Test the module with `insmod gslx680_ts_acpi.ko`. You may need to recompile for different kernels
 
 To do this permanent:
 
+Create the file */etc/modules-load.d/gslx680_ts_acpi.conf* and add:
+
+`gslx680_ts_acpi`
+
+Then copy the module to the system folder and build dependencies:
 ```
 sudo cp gslx680_ts_acpi.ko /lib/modules/$(uname -r)/
-sudo nano /etc/modules-load.d/gslx680_ts_acpi.conf
-
- gslx680_ts_acpi
-
 sudo depmod
 ```
-To test:
+To test the installed module:
 
 ```
 sudo modprobe gslx680_ts_acpi)
@@ -58,7 +59,11 @@ lsmod | grep gslx680_ts_acpi
 ```
 ### Kernel driver silead_ts (the hard way recommended)
 
-Todo
+Download the kernel, apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c* and compile. The patch is for kernel 5.3
+
+To compile the kernel you can follow instructions [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
+
+Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/firmware/silead*
 
 ## Fix screen rotation
 
@@ -68,6 +73,7 @@ To fix wrong screen orientation create a udev rule for the sensor in the file /e
 sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
  ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1
 ```
+(second line has to be indented)
 
 Update udev rules:
 
@@ -81,18 +87,18 @@ Shutdown and power on
 
 ## Bluetooth
 
-Bluetooth won't work after suspend. To fix this it is needed to run a script after suspend:
+Bluetooth won't work after suspend. To fix this create the script */usr/lib/pm-utils/sleep.d/99bluetooth* to be executed after suspend:
 
 ```
-sudo nano /usr/lib/pm-utils/sleep.d/99bluetooth
-
- #!/bin/sh  
- case "$1" in  
-  resume)  
-   rfkill block 2  
-   rfkill unblock 2  
+ #!/bin/sh
+ case "$1" in
+  resume)
+   rfkill block 2
+   rfkill unblock 2
  esac
 ```
+Make it executable with *chmod*
+
 
 ## Other tweaks and fixes
 
@@ -105,7 +111,7 @@ The keyboard does not have all keys. Shortcuts for some missing keys:
 Esc Ctrl+AltGr+  
 
 
-Touchscreen scrolling in Firefox doesn't work. To fix this add to /etc/security/pam_env.conf:
+Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc/security/pam_env.conf`:
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 

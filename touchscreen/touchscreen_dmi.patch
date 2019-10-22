@@ -1,0 +1,41 @@
+--- ./touchscreen_dmi.c	2019-09-15 23:19:32.000000000 +0200
++++ touchscreen_dmi_sct101ctm.c	2019-10-22 08:02:41.757311421 +0200
+@@ -464,6 +464,23 @@
+ 	.properties	= pov_mobii_wintab_p1006w_v10_props,
+ };
+ 
++static const struct property_entry schneider_sct101ctm_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1715),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
++        PROPERTY_ENTRY_BOOL("touchscreen-inverted-x"),
++        PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++        PROPERTY_ENTRY_BOOL("touchscreen-swapped-x-y"),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-schneider-sct101ctm.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++        PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
++
++static const struct silead_ts_dmi_data schneider_sct101ctm_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= schneider_sct101ctm_props,
++};
++
+ static const struct property_entry teclast_x3_plus_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
+@@ -859,6 +876,14 @@
+ 		},
+ 	},
+ 	{
++		/* Schneider SCT101CTM */
++		.driver_data = (void *)&schneider_sct101ctm_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Default string"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SCT101CTM"),
++		},
++	},
++	{
+ 		/* Teclast X3 Plus */
+ 		.driver_data = (void *)&teclast_x3_plus_data,
+ 		.matches = {
