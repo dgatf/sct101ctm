@@ -69,9 +69,9 @@ Apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchs
 
 General instructions to compile the kernel [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
 
-It can be built on the Schneider with minimum modules
+It can be built on the Schneider with minimum modules increasing free ram
 
-Copy this [.config](kernel/.config) to the kernel sources upper folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
+Copy [.config](kernel/.config) to the kernel sources upper folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
 
 Then build and install:
 
