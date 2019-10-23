@@ -16,7 +16,7 @@
 +	{ }
 +};
 +
-+static const struct silead_ts_dmi_data schneider_sct101ctm_data = {
++static const struct ts_dmi_data schneider_sct101ctm_data = {
 +	.acpi_name	= "MSSL1680:00",
 +	.properties	= schneider_sct101ctm_props,
 +};
