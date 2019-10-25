@@ -1,6 +1,6 @@
 # Install Ubuntu Budgie 19.04 on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO. Installation of regular Ubuntu 19.04 is similar but it goes slow with 2GB RAM
+This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO. Installation of regular Ubuntu 19.04 is similar but it is slow with 2GB RAM
 
 ## Prepare the ISO in a USB stick on a Ubuntu installation
 
