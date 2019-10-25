@@ -1,16 +1,16 @@
-# Install Ubuntu 19.04 on Schneider SCT101CTM
+# Install Ubuntu Budgie 19.04 on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO
+This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO. Installation of regular Ubuntu 19.04 is similar but it goes slow with 2GB RAM
 
 ## Prepare the ISO in a USB stick on a Ubuntu installation
 
-Download [ubuntu-19.10-desktop-amd64.iso](https://ubuntu.com/download/desktop/thank-you?country=ES&version=19.10&architecture=amd64)
+Download Ubuntu
 
 Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
 
-Create linuxium-ubuntu-19.04-desktop-amd64.iso:
+Create the iso with 32bit bootloader:
 
-`isorespin.sh -i ubuntu-19.04-desktop-amd64.iso`
+`isorespin.sh -i ubuntu-budgie-19.04-desktop-amd64.iso`
 
 Copy the iso to USB stick with Startup Disk Creator
 
@@ -22,13 +22,55 @@ Open a terminal window with cmd and reboot into UEFI:
 
 `shutdown /r /fw`
 
-(In Ubuntu: `systemctl reboot --firmware-setup`)
+In Ubuntu from command line: `systemctl reboot --firmware-setup`
+Or by pressing *Power on* and *Volume+* until Schneider logo appears. From grub menu select *System Setup*
 
-Go to Boot tab and change the boot order or override boot to the USB, then Save & exit
+In the UEFO menu go to Boot tab and change the boot order or override boot to the USB, then Save & exit
 
 ## Install Ubuntu
 
-Install ubuntu from grub (or try before installing). It is recommended to delete the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
+Install Ubuntu Budgie from grub menu. If you select Try before installing the mouse pointer position will be rotated 180º from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
+
+If screen orientation is inverted execute 'xrandr -o 1`
+
+For network connection you can use wifi or usb tethering. If using wifi connect now because in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
+
+When installing it is recommended the option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
+
+## Fix pointer rotation
+
+After installation at first boot the mouse pointer is rotated 180 from the screen (obly Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
+
+Press Ctrl+Alt+T to open terminal
+
+Rotate screen
+
+`xrandr -o 1`
+
+Install gdm3
+```
+sudo apt-get update
+sudo apt-get install gdm3
+```
+In the configuration menu select gdm3
+
+
+## Fix screen rotation
+
+To fix screen orientation create a udev rule for the accelerometer sensor in /etc/udev/hwdb.d/61-sensor-local.hwdb
+```
+sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
+ ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1
+```
+(second line has to be indented)
+
+Update udev rules:
+```
+sudo systemd-hwdb update
+sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
+```
+Shutdown and power on
+
 
 ## Touchscreen driver
 
@@ -52,7 +94,6 @@ sudo cp gslx680_ts_acpi.ko /lib/modules/$(uname -r)/
 sudo depmod
 ```
 To test the installed module:
-
 ```
 sudo modprobe gslx680_ts_acpi
 lsmod | grep gslx680_ts_acpi
@@ -61,46 +102,51 @@ lsmod | grep gslx680_ts_acpi
 
 Delete file */etc/modules-load.d/gslx680_ts_acpi.conf* if created
 
-Download the [kernel](https://www.kernel.org/)
-
-Apply [patch](touchscreen/touchscreen_dmi.patch) to *drivers/platform/x86/touchscreen_dmi.c*
-
-`patch touchscreen_dmi.c < touchscreen_dmi.patch`
-
-General instructions to compile the kernel [here](https://www.cyberciti.biz/tips/compiling-linux-kernel-26.html)
-
-It can be built on the Schneider with minimum modules increasing free ram
-
-Copy [.config](kernel/.config) to the kernel sources top folder (or use make `make localmodconfig` and add additional drivers with `make menuconfig`)
-
-Then build and install:
-
-```
-make
-make install_modules
-make install
-```
 Copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/firmware/silead/*
 
-## Fix screen rotation
+General instructions to compile the kernel [here](https://kernel-team.pages.debian.net/kernel-handbook/ch-common-tasks.html#s-common-official)
 
-To fix screen orientation create a udev rule for the accelerometer sensor in /etc/udev/hwdb.d/61-sensor-local.hwdb
-
-```
-sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
- ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1
-```
-(second line has to be indented)
-
-Update udev rules:
+Add sources. Uncomment lines in /etc/apt/sources.list
 
 ```
-sudo systemd-hwdb update
-sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
+deb-src http://archive.ubuntu.com/ubuntu disco main
+deb-src http://archive.ubuntu.com/ubuntu disco-updates main
 ```
+Prepare environment
 
-Shutdown and power on
+`sudo apt-get install build-essential devscripts equivs libncurses5 libncurses5-dev`
 
+Build dependencies with mk-build-deps so later they can be easily removed
+
+`mk-build-deps linux --install --root-cmd sudo --remove`
+
+Download sources
+
+`apt-get source linux`
+
+Change to sources folder
+
+Apply [patch](touchscreen/touchscreen_dmi.patch)
+
+`patch -p1 < ../patches/touchscreen_dmi.patch`
+
+Copy kernel .config
+
+`cp /boot/config-$(uname -r) .config`
+
+Change config options
+```
+scripts/config --disable DEBUG_INFO
+scripts/config --set-str CONFIG_LOCALVERSION "touchscreen"
+```
+(Optionally you can do make `make localmodconfig` and add additional drivers with `make menuconfig` to reduce building time and increase free ram)
+
+Compile and install
+```
+make -j 4
+sudo make modules_install
+sudo make install
+```
 
 ## Bluetooth
 
@@ -137,6 +183,13 @@ In Firefox go to `about:config` and then change:
 `dow.w3c_touch_events.enabled=1`
 
 To avoid double click when single clicking with the touchpad increase `Double click delay` in Settings Universal access
+
+Increase mouse pointer size Settings Universal access
+
+Install gnome-tweaks and increase font scale in Settings in Fonts
+
+Install dconf and increase launcher icon size in /net/launchpad/plank/docks/dock1/icon-size
+
 
 ## Not working
 
