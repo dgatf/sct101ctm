@@ -29,7 +29,7 @@ In the UEFO menu go to Boot tab and change the boot order or override boot to th
 
 ## Install Ubuntu
 
-Install Ubuntu Budgie from grub menu. If you select Try before installing the mouse pointer position will be rotated 180º from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
+Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be rotated 180º from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
 
 If screen orientation is inverted execute 'xrandr -o 1`
 
