@@ -42,7 +42,7 @@ Alternatively you can connnect to wifi using nmcli
 
 It is recommended the installation option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
 
-## Fix pointer rotation
+## Fix inverted pointer
 
 After installation at first boot the mouse pointer is inverted from the screen (only Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
 
