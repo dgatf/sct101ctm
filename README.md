@@ -78,7 +78,7 @@ Shutdown and power on
 
 ## SD card
 
-Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply patch to kernel as described below
+Some SD cards are not initialized. If SD card is not initialized with error *mmc2: error -84 whilst initialising SD card* apply patch to kernel as described below
 
 ## Touchscreen driver
 
@@ -138,7 +138,7 @@ Apply patch [touchscreen_dmi.patch](patches/touchscreen_dmi.patch)
 
 `patch -p1 < <path to patch>/touchscreen_dmi.patch`
 
-Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply patch [sdhci.patch](patches/sdhci.patch)
+Some SD cards are not initialized. If SD card is not initialized with error *mmc2: error -84 whilst initialising SD card* apply patch [sdhci.patch](patches/sdhci.patch)
 
 `patch -p1 < <path to patch>/sdhci.patch`
 
