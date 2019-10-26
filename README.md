@@ -76,6 +76,9 @@ sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
 ```
 Shutdown and power on
 
+## SD card
+
+Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply patch to kernel as described below
 
 ## Touchscreen driver
 
@@ -131,11 +134,11 @@ Download sources
 
 Change to sources folder (e.g.: linux-5.3.0)
 
-Apply [patch](patches/touchscreen_dmi.patch)
+Apply patch [touchscreen_dmi.patch](patches/touchscreen_dmi.patch)
 
 `patch -p1 < <path to patch>/touchscreen_dmi.patch`
 
-Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
+Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply patch [sdhci.patch](patches/sdhci.patch)
 
 `patch -p1 < <path to patch>/sdhci.patch`
 
@@ -146,7 +149,7 @@ Copy kernel .config
 Change config options
 ```
 scripts/config --disable DEBUG_INFO
-scripts/config --set-str CONFIG_LOCALVERSION "-touchscreen"
+scripts/config --set-str CONFIG_LOCALVERSION "-sct101ctm"
 ```
 (Optionally you can do `make localmodconfig` and add additional drivers with `make menuconfig` to reduce building time and increase free ram)
 
