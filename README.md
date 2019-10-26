@@ -40,7 +40,7 @@ Alternatively you can connnect to wifi using nmcli
 
 `nmcli d wifi connect <wifiSSID> password <wifiPassword>`
 
-When installing it is recommended the option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
+It is recommended the installation option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
 
 ## Fix pointer rotation
 
