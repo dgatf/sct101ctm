@@ -1,6 +1,6 @@
-# Install Ubuntu Budgie 19.04 on Schneider SCT101CTM
+# Install Ubuntu Budgie 19.04/19.10 on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu to prepare the ISO. Installation of regular Ubuntu 19.04 is similar but it is slow with 2GB RAM
+This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu 19.04 is similar but it is slow with 2GB RAM. The same process applies for 19.10 versions
 
 ## Prepare the ISO in a USB stick on a Ubuntu installation
 
@@ -12,24 +12,25 @@ Create the iso with 32bit bootloader:
 
 `isorespin.sh -i ubuntu-budgie-19.04-desktop-amd64.iso`
 
-Copy the iso to USB stick with Startup Disk Creator
+Create a bootable USB with Startup Disk Creator
 
 ## Change UEFI boot order in Windows on Schneider
 
-Boot Windows 10 and insert USB stick with the ISO
+Boot Windows 10 and insert bootable USB
 
 Open a terminal window with cmd and reboot into UEFI:
 
 `shutdown /r /fw`
 
 In Ubuntu from command line: `systemctl reboot --firmware-setup`
-Or by pressing *Power on* and *Volume+* until Schneider logo appears. From grub menu select *System Setup*
 
-In the UEFI menu go to Boot tab and change the boot order or override boot to the USB, then Save & exit
+Or after shutdown press *Power on* and *Volume+* until Schneider logo appears. From grub menu select *System Setup*
+
+In UEFI menu go to *Boot* tab and change the boot order or override boot to the USB, then Save & exit
 
 ## Install Ubuntu
 
-Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be rotated 180º from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
+Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be inverted  from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
 
 If screen orientation is inverted execute `xrandr -o 1`
 
@@ -39,7 +40,7 @@ When installing it is recommended the option that deletes the entire SSD as it i
 
 ## Fix pointer rotation
 
-After installation at first boot the mouse pointer is rotated 180 from the screen (only Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
+After installation at first boot the mouse pointer is inverted from the screen (only Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
 
 Press Ctrl+Alt+T to open terminal
 
@@ -55,7 +56,7 @@ sudo apt-get install gdm3
 In the configuration menu select gdm3
 
 
-## Fix screen rotation
+## Fix screen orientation
 
 To fix screen orientation create a udev rule for the accelerometer sensor in /etc/udev/hwdb.d/61-sensor-local.hwdb
 ```
@@ -124,15 +125,15 @@ Download sources
 
 `apt-get source linux`
 
-Change to sources folder
+Change to sources folder (e.g.: linux-5.3.0)
 
 Apply [patch](patches/touchscreen_dmi.patch)
 
-`patch -p1 < ../patches/touchscreen_dmi.patch`
+`patch -p1 < <path to patch>/touchscreen_dmi.patch`
 
-If SD-card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
+Some SD cards are not initialized. If SD card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
 
-`patch -p1 < ../patches/sdhci.patch`
+`patch -p1 < <path to patch>/sdhci.patch`
 
 Copy kernel .config
 
@@ -178,11 +179,11 @@ The keyboard does not have all keys. Shortcuts for some missing keys:
 Esc Ctrl+AltGr+  
 
 
-Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc/security/pam_env.conf`:
+Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc/security/pam_env.conf`
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
-In Firefox go to `about:config` and then change:
+In Firefox go to `about:config` and then change
 
 `dow.w3c_touch_events.enabled=1`
 
