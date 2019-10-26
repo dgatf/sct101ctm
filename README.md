@@ -130,7 +130,7 @@ Apply [patch](patches/touchscreen_dmi.patch)
 
 `patch -p1 < ../patches/touchscreen_dmi.patch`
 
-If SD-card is not initalized with error * mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
+If SD-card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
 
 `patch -p1 < ../patches/sdhic.patch`
 
@@ -147,8 +147,8 @@ scripts/config --set-str CONFIG_LOCALVERSION "-touchscreen"
 
 Compile and install
 ```
-make -j 4modules_install
-sudo make
+make -j 4
+sudo make modules_install
 sudo make install
 ```
 
