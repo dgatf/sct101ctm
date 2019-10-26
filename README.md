@@ -114,7 +114,7 @@ deb-src http://archive.ubuntu.com/ubuntu disco-updates main
 ```
 Prepare environment
 
-`sudo apt-get install build-essential cmake devscripts equivs libncurses5 libncurses5-dev`
+`sudo apt-get install build-essential devscripts equivs libncurses5 libncurses5-dev`
 
 Build dependencies with mk-build-deps so later they can be easily removed
 
@@ -132,7 +132,7 @@ Apply [patch](patches/touchscreen_dmi.patch)
 
 If SD-card is not initalized with error *mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
 
-`patch -p1 < ../patches/sdhic.patch`
+`patch -p1 < ../patches/sdhci.patch`
 
 Copy kernel .config
 
