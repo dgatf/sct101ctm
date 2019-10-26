@@ -25,13 +25,13 @@ Open a terminal window with cmd and reboot into UEFI:
 In Ubuntu from command line: `systemctl reboot --firmware-setup`
 Or by pressing *Power on* and *Volume+* until Schneider logo appears. From grub menu select *System Setup*
 
-In the UEFO menu go to Boot tab and change the boot order or override boot to the USB, then Save & exit
+In the UEFI menu go to Boot tab and change the boot order or override boot to the USB, then Save & exit
 
 ## Install Ubuntu
 
 Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be rotated 180º from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
 
-If screen orientation is inverted execute 'xrandr -o 1`
+If screen orientation is inverted execute `xrandr -o 1`
 
 For network connection you can use wifi or usb tethering. If using wifi connect now because in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
 
@@ -39,7 +39,7 @@ When installing it is recommended the option that deletes the entire SSD as it i
 
 ## Fix pointer rotation
 
-After installation at first boot the mouse pointer is rotated 180 from the screen (obly Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
+After installation at first boot the mouse pointer is rotated 180 from the screen (only Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
 
 Press Ctrl+Alt+T to open terminal
 
@@ -114,7 +114,7 @@ deb-src http://archive.ubuntu.com/ubuntu disco-updates main
 ```
 Prepare environment
 
-`sudo apt-get install build-essential devscripts equivs libncurses5 libncurses5-dev`
+`sudo apt-get install build-essential cmake devscripts equivs libncurses5 libncurses5-dev`
 
 Build dependencies with mk-build-deps so later they can be easily removed
 
@@ -126,9 +126,13 @@ Download sources
 
 Change to sources folder
 
-Apply [patch](touchscreen/touchscreen_dmi.patch)
+Apply [patch](patches/touchscreen_dmi.patch)
 
 `patch -p1 < ../patches/touchscreen_dmi.patch`
+
+If SD-card is not initalized with error * mmc2: error -84 whilst initialising SD card* apply [patch](patches/sdhci.patch)
+
+`patch -p1 < ../patches/sdhic.patch`
 
 Copy kernel .config
 
@@ -137,14 +141,14 @@ Copy kernel .config
 Change config options
 ```
 scripts/config --disable DEBUG_INFO
-scripts/config --set-str CONFIG_LOCALVERSION "touchscreen"
+scripts/config --set-str CONFIG_LOCALVERSION "-touchscreen"
 ```
 (Optionally you can do make `make localmodconfig` and add additional drivers with `make menuconfig` to reduce building time and increase free ram)
 
 Compile and install
 ```
-make -j 4
-sudo make modules_install
+make -j 4modules_install
+sudo make
 sudo make install
 ```
 
@@ -191,8 +195,6 @@ Install gnome-tweaks and increase font scale in Settings in Fonts
 Install dconf and increase launcher icon size in /net/launchpad/plank/docks/dock1/icon-size
 
 
-## Not working
+## Cameras not working
 
 Cameras (ov2680) don't work. Camera driver ov2680 is available with the kernel, needs to be activated though. The issue is the atomISP driver. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
-
-SD card error. It was working with Ubuntu 16. No solution yet

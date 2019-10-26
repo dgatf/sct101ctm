@@ -1,0 +1,11 @@
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 90cc1977b792..5d2809aeb4eb 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1430,6 +1430,7 @@  void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
+ 
+ 	clk |= SDHCI_CLOCK_CARD_EN;
+ 	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
++	udelay(80);
+ }
+ EXPORT_SYMBOL_GPL(sdhci_enable_clk);
