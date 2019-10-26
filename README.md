@@ -2,13 +2,13 @@
 
 This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu 19.04 is similar but it is slow with 2GB RAM. The same process applies for 19.10 versions
 
-## Prepare the ISO in a USB stick on a Ubuntu installation
+## Prepare bootable USB on a Ubuntu installation
 
-Download Ubuntu
+Download Ubuntu/Ubuntu Budgie
 
 Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
 
-Create the iso with 32bit bootloader:
+Create the iso with 32bit bootloader
 
 `isorespin.sh -i ubuntu-budgie-19.04-desktop-amd64.iso`
 
@@ -18,7 +18,7 @@ Create a bootable USB with Startup Disk Creator
 
 Boot Windows 10 and insert bootable USB
 
-Open a terminal window with cmd and reboot into UEFI:
+Open a terminal window with cmd and reboot into UEFI
 
 `shutdown /r /fw`
 
@@ -34,7 +34,11 @@ Install Ubuntu Budgie from grub menu. If you select *Try before installing* the 
 
 If screen orientation is inverted execute `xrandr -o 1`
 
-For network connection you can use wifi or usb tethering. If using wifi connect now because in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
+For network connection you can use wifi or usb tethering. If using wifi better connect now as in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
+
+Alternatively you can connnect to wifi using nmcli
+
+`nmcli d wifi connect <wifiSSID> password <wifiPassword>`
 
 When installing it is recommended the option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
 
