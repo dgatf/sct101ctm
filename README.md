@@ -148,7 +148,7 @@ Change config options
 scripts/config --disable DEBUG_INFO
 scripts/config --set-str CONFIG_LOCALVERSION "-touchscreen"
 ```
-(Optionally you can do make `make localmodconfig` and add additional drivers with `make menuconfig` to reduce building time and increase free ram)
+(Optionally you can do `make localmodconfig` and add additional drivers with `make menuconfig` to reduce building time and increase free ram)
 
 Compile and install
 ```
