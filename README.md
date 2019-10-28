@@ -1,6 +1,6 @@
-# Install Ubuntu Budgie 19.04/19.10 on Schneider SCT101CTM
+# Ubuntu Budgie 19.04/19.10 on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu 19.04 is similar but it is slow with 2GB RAM. The same process applies for 19.10 versions
+This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu and Xubuntu is similar. Regular Ubuntu is slow with 2GB RAM. The same process applies for 19.10 versions
 
 ## Prepare bootable USB on a Ubuntu installation
 
@@ -75,6 +75,8 @@ sudo systemd-hwdb update
 sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
 ```
 Shutdown and power on
+
+If installing Xubuntu, iio-sensor-proxy may not work properly. Alternatively use [rotate.py](https://wiki.archlinux.org/index.php/Tablet_PC) script
 
 ## SD card
 
@@ -190,17 +192,15 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
-In Firefox go to `about:config` and then change
-
-`dow.w3c_touch_events.enabled=1`
-
 To avoid double click when single clicking with the touchpad increase `Double click delay` in Settings Universal access
 
 Increase mouse pointer size Settings Universal access
 
-Install gnome-tweaks and increase font scale in Settings in Fonts
+With gnome-tweaks and increase font scale in Settings in Fonts
 
-Install dconf and increase launcher icon size in /net/launchpad/plank/docks/dock1/icon-size
+Install dconf-editor and increase launcher icon size in /net/launchpad/plank/docks/dock1/icon-size
+
+Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboard
 
 
 ## Cameras not working
