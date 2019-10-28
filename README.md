@@ -30,9 +30,9 @@ In UEFI menu go to *Boot* tab and change the boot order or override boot to the 
 
 ## Install Ubuntu
 
-Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be inverted  from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. gdm3 3.32+ has this partially solved: start session with the screen in horizontal. The pointer is not rotated and you will be able to rotate the screen after. Though starting the session in vertical, the problem persist
+Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be inverted  from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. A workaround is to install gdm3 >=3.32 with limitation to start the session in horizontal position. The pointer is not rotated and you are able to rotate the screen after. Though starting the session in vertical, the problem persist
 
-If screen orientation is inverted execute `xrandr -o 1`
+If screen orientation is inverted `xrandr -o 1`
 
 For network connection you can use wifi or usb tethering. If using wifi better connect now as in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
 
@@ -205,4 +205,4 @@ Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboa
 
 ## Cameras not working
 
-Cameras (ov2680) don't work. Camera driver ov2680 is available with the kernel, needs to be activated though. The issue is the atomISP driver. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
+Cameras (ov2680) don't work. This camera requires the atomIsp driver and it has been discontinued for now. It was a stagining driver until kernel 4.14, then removed. It compiles and detects the camera, but does not work at all. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
