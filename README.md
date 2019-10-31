@@ -2,6 +2,16 @@
 
 This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu and Xubuntu is similar. Regular Ubuntu is slow with 2GB RAM. The same process applies for 19.10 versions
 
+## Screenshots
+
+<p align="center"><img src="./images/1.png" width="400"></p> 
+<p align="center"><img src="./images/2.png" width="400"></p>
+<p align="center"><img src="./images/3.png" width="400"></p>
+<p align="center"><img src="./images/4.png" width="400"></p>
+<p align="center"><img src="./images/5.png" width="400"></p>
+<p align="center"><img src="./images/6.png" width="400"></p>
+
+
 ## Prepare bootable USB on a Ubuntu installation
 
 Download Ubuntu/Ubuntu Budgie/Xubuntu
@@ -233,13 +243,3 @@ Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboa
 ## Cameras not working
 
 Cameras (ov2680) don't work. This camera requires the atomIsp driver and it has been discontinued for now. It was a stagining driver until kernel 4.14, then removed. It compiles and detects the camera, but does not work at all. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
-
-
-## Screenshots
-
-<p align="center"><img src="./images/1.png" width="400"></p> 
-<p align="center"><img src="./images/2.png" width="400"></p>
-<p align="center"><img src="./images/3.png" width="400"></p>
-<p align="center"><img src="./images/4.png" width="400"></p>
-<p align="center"><img src="./images/5.png" width="400"></p>
-
