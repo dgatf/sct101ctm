@@ -4,7 +4,7 @@ This document describes the process to install Ubuntu Budgie 19.04 on Schneider 
 
 ## Prepare bootable USB on a Ubuntu installation
 
-Download Ubuntu/Ubuntu Budgie
+Download Ubuntu/Ubuntu Budgie/Xubuntu
 
 Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
 
@@ -177,6 +177,40 @@ Bluetooth won't work after suspend. To fix this create the script */usr/lib/pm-u
 Make it executable with *chmod*
 
 
+## Customize desktop with dconf
+
+open dconf-editor and change
+```
+org.gnome.desktop.interface gtk-theme Pocillo-dark
+org.gnome.desktop.interface icon-theme Pocillo
+org.gnome.desktop.interface cursor-theme Adawita
+org.gnome.desktop.interface cursor-size 48
+org.gnome.desktop.interface scaling-factor 2
+org.gnome.desktop.interface text-scaling-factor 0.9
+net.launchpad.plank.docks.dock1 icon-size 40
+```
+Harmonize with gdm3
+```
+sudo -i
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface gtk-theme Pocillo-dark'
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface icon-theme Pocillo'
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface cursor-theme Adawita'
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface cursor-size 48'
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface scaling-factor 2'
+su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface text-scaling-factor 0.9'
+```
+To check changes
+su gdm -s /bin/sh -c 'dbus-launch gsettings list-recursively org.gnome.desktop.interface'
+
+Edit /usr/share/gnome-shell/theme/gnome-shell.css and modify lockDialogGroup
+``` 
+#lockDialogGroup {
+  background: #2e3436 url(file:///usr/share/backgrounds/Xplo_by_Hugo_Cliff.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; }
+```
+
 ## Other tweaks and fixes
 
 Wifi won't work after restart. Instead do a shutdown and power on
@@ -187,18 +221,11 @@ The keyboard does not have all keys. Shortcuts for some missing keys:
 \>  Shift+AltGr+X  
 Esc Ctrl+AltGr+  
 
-
 Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc/security/pam_env.conf`
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
 To avoid double click when single clicking with the touchpad increase `Double click delay` in Settings Universal access
-
-Increase mouse pointer size Settings Universal access
-
-With gnome-tweaks and increase font scale in Settings in Fonts
-
-Install dconf-editor and increase launcher icon size in /net/launchpad/plank/docks/dock1/icon-size
 
 Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboard
 
@@ -206,3 +233,13 @@ Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboa
 ## Cameras not working
 
 Cameras (ov2680) don't work. This camera requires the atomIsp driver and it has been discontinued for now. It was a stagining driver until kernel 4.14, then removed. It compiles and detects the camera, but does not work at all. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
+
+
+## Screenshots
+
+<p align="center"><img src="./images/1.png" width="400"></p> 
+<p align="center"><img src="./images/2.png" width="400"></p>
+<p align="center"><img src="./images/3.png" width="400"></p>
+<p align="center"><img src="./images/4.png" width="400"></p>
+<p align="center"><img src="./images/5.png" width="400"></p>
+
