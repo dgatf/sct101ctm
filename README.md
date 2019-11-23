@@ -4,9 +4,9 @@ This document describes the process to install any Ubuntu flavour 18.04 or highe
 
 - Wifi, bluetooth, audio and interfaces works out of the box
 - Touchscreen and accelerometer has to be fixed as described below
-- Cameras doesn't work 
+- Cameras don't work due to atomisp driver. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
 
-## Screenshots
+## Screenshots (Ubuntu Budgie)
 
 <p align="center"><img src="./images/1.png" width="400"></p> 
 <p align="center"><img src="./images/2.png" width="400"></p>
@@ -44,7 +44,7 @@ In UEFI menu go to *Boot* tab and change the boot order or override boot to the 
 
 ## Install Ubuntu
 
-The default x86 graphics driver, *fbdeb*, has the screen rotated 180º respect to the mouse. To fix this for the installation, from a terminal window ( *Ctrl+Alt+T*)
+The default x86 graphics driver, *fbdev*, has the screen rotated 180º respect to the mouse. To fix this for the installation, do from a terminal window (*Ctrl+Alt+T*)
 ```
 xrandr --output DSI-1 --transform -1,0,1920,0,-1,1200,0,0,1
 xrandr -o 1
@@ -56,13 +56,13 @@ It is recommended the installation over the entire eMMC. 32GB is barely enough f
 ## Fix inverted pointer/screen
 
 Create */etc/X11/xorg.conf.d/20-monitor.conf* to force the intel driver 
-
+```
 Section "Device"
 	Identifier   "Card0"
 	Driver      "intel"
 	BusID       "PCI:0:2:0"
 EndSection
-
+```
 ## Fix sensor orientation
 
 To fix accelerometer orientation create a udev rule */etc/udev/hwdb.d/61-sensor-local.hwdb*
@@ -195,7 +195,3 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
 Install Onboard keyboard and activate it in Lightdm and screensaver
-
-## Cameras not working
-
-Cameras (ov2680) don't work. This camera requires the atomIsp driver and it has been discontinued for now. It was a stagining driver until kernel 4.14, then removed. It compiles and detects the camera, but does not work at all. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
