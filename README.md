@@ -16,13 +16,11 @@ This document describes the process to install any Ubuntu flavour 18.04 or highe
 <p align="center"><img src="./images/6.png" width="400"></p>
 
 
-## Prepare bootable USB on a Ubuntu installation
+## Prepare a bootable USB
 
-Download Ubuntu preferred flavour
+Download your Ubuntu preferred flavour
 
-The tablet has with a 32bit UEFI, but Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader you can use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html)
-
-Create the iso with 32bit bootloader
+The tablet has with a 32bit UEFI, but Ubuntu comes with 64bit bootloader. To replace with a 32bit UEFI bootloader you can use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html)
 
 `isorespin.sh -i xubuntu-19.10-desktop-amd64.iso`
 
@@ -30,7 +28,7 @@ Create a bootable USB with Startup Disk Creator
 
 Alternatively you can prepare a bootable usb with [Arch](https://wiki.archlinux.org/index.php/ASUS_x205ta#Proper_way_of_generating_a_bootia32.efi_with_grub.cfg_included) and build the system from scratch
 
-## Change UEFI boot order in Windows on Schneider
+## Change UEFI boot order in Windows
 
 Boot Windows 10 and insert bootable USB
 
