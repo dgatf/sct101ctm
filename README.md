@@ -195,3 +195,5 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
 Install Onboard keyboard and activate it in Lightdm and screensaver
+
+Compile and install [screenrotator](https://github.com/GuLinux/ScreenRotator) and [unclutter](https://github.com/Airblader/unclutter-xfixes)
