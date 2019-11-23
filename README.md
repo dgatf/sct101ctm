@@ -1,6 +1,10 @@
-# Ubuntu Budgie 19.04/19.10 on Schneider SCT101CTM
+# Ubuntu 18.04+ on Schneider SCT101CTM
 
-This document describes the process to install Ubuntu Budgie 19.04 on Schneider SCT101CTM. It is required a working installation of Ubuntu (or virtual machine) to prepare the bootable USB. Installation of regular Ubuntu and Xubuntu is similar. Regular Ubuntu is slow with 2GB RAM. The same process applies for 19.10 versions
+This document describes the process to install any Ubuntu flavour 18.04 or higher on Schneider SCT101CTM. It is required a working Linux (or virtual machine) to prepare the bootable USB. It is recommended to install Xubuntu or Lubuntu for best performance
+
+- Wifi, bluetooth, audio and interfaces works out of the box
+- Touchscreen and accelerometer has to be fixed as described below
+- Cameras doesn't work 
 
 ## Screenshots
 
@@ -14,15 +18,17 @@ This document describes the process to install Ubuntu Budgie 19.04 on Schneider 
 
 ## Prepare bootable USB on a Ubuntu installation
 
-Download Ubuntu/Ubuntu Budgie/Xubuntu
+Download Ubuntu preferred flavour
 
-Install isorespin. This tablet requires a 32bit UEFI boot to load a 64bits OS. Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html) script
+The tablet has with a 32bit UEFI, but Ubuntu comes with 64bits bootloader. To replace with a 32bit UEFI bootloader you can use [isorespin](http://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html)
 
 Create the iso with 32bit bootloader
 
-`isorespin.sh -i ubuntu-budgie-19.04-desktop-amd64.iso`
+`isorespin.sh -i xubuntu-19.10-desktop-amd64.iso`
 
 Create a bootable USB with Startup Disk Creator
+
+Alternatively you can prepare a bootable usb with [Arch](https://wiki.archlinux.org/index.php/ASUS_x205ta#Proper_way_of_generating_a_bootia32.efi_with_grub.cfg_included) and build the system from scratch
 
 ## Change UEFI boot order in Windows on Schneider
 
@@ -34,45 +40,34 @@ Open a terminal window with cmd and reboot into UEFI
 
 In Ubuntu from command line: `systemctl reboot --firmware-setup`
 
-Or after shutdown press *Power on* and *Volume+* until Schneider logo appears. From grub menu select *System Setup*
+Or press *Shift* on boot to open grub menu and from grub menu select *System Setup*
 
 In UEFI menu go to *Boot* tab and change the boot order or override boot to the USB, then Save & exit
 
 ## Install Ubuntu
 
-Install Ubuntu Budgie from grub menu. If you select *Try before installing* the mouse pointer position will be inverted  from screen which makes it difficult to use. This is related to the x session manager. Regular Ubuntu comes with gdm3 whereas Budgie comes with lightdm. A workaround is to install gdm3 >=3.32 with limitation to start the session in horizontal position. The pointer is not rotated and you are able to rotate the screen after. Though starting the session in vertical, the problem persist
-
-If screen orientation is inverted `xrandr -o 1`
-
-For network connection you can use wifi or usb tethering. If using wifi better connect now as in the next step you will need it and the mouse pointer will be rotated (if installing Ubuntu Budgie)
-
-Alternatively you can connnect to wifi using nmcli
-
-`nmcli d wifi connect <wifiSSID> password <wifiPassword>`
-
-It is recommended the installation option that deletes the entire SSD as it is only 32GB, barely enough for dual boot, altohugh is doable (not covered here)
-
-## Fix inverted pointer
-
-After installation at first boot the mouse pointer is inverted from the screen (only Ubuntu Budgie). To fix this install gdm3. If wifi is not available Shutdown and Power on (no reboot)
-
-Press Ctrl+Alt+T to open terminal
-
-Rotate screen
-
-`xrandr -o 1`
-
-Install gdm3
+The default x86 graphics driver, *fbdeb*, has the screen rotated 180º respect to the mouse. To fix this for the installation, from a terminal window ( *Ctrl+Alt+T*)
 ```
-sudo apt-get update
-sudo apt-get install gdm3
+xrandr --output DSI-1 --transform -1,0,1920,0,-1,1200,0,0,1
+xrandr -o 1
 ```
-In the configuration menu select gdm3
+For network connection you can use wifi or usb tethering
 
+It is recommended the installation over the entire eMMC. 32GB is barely enough for dual boot
 
-## Fix screen orientation
+## Fix inverted pointer/screen
 
-To fix screen orientation create a udev rule for the accelerometer sensor in /etc/udev/hwdb.d/61-sensor-local.hwdb
+Create */etc/X11/xorg.conf.d/20-monitor.conf* to force the intel driver 
+
+Section "Device"
+	Identifier   "Card0"
+	Driver      "intel"
+	BusID       "PCI:0:2:0"
+EndSection
+
+## Fix sensor orientation
+
+To fix accelerometer orientation create a udev rule */etc/udev/hwdb.d/61-sensor-local.hwdb*
 ```
 sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
  ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, 1, 0; 0, 0, 1
@@ -86,7 +81,7 @@ sudo udevadm trigger -v -p DEVNAME=/dev/iio:device0
 ```
 Shutdown and power on
 
-If installing Xubuntu, iio-sensor-proxy may not work properly. Alternatively use [rotate.py](https://wiki.archlinux.org/index.php/Tablet_PC) script
+Install Screentotator
 
 ## SD card
 
@@ -94,7 +89,7 @@ Some SD cards are not initialized. If SD card is not initialized with error *mmc
 
 ## Touchscreen driver
 
-Wifi, bluetooth and audio works out of the box. For the touchscreen it is needed to install the driver and firmware. Thanks to [gsl-firmware](https://github.com/onitake/gsl-firmware) I've ported the firmware to linux. Use files in [touchscreen](touchscreen) folder. There are two open source drivers: gslx680_ts_acpi and silead_ts
+For the touchscreen it is needed to install the driver and firmware. Thanks to [gsl-firmware](https://github.com/onitake/gsl-firmware) I've ported the firmware to linux. Use files in [touchscreen](touchscreen) folder. There are two open source drivers: gslx680_ts_acpi and silead_ts
 
 ### gslx680_ts_acpi (the easy way)
 
@@ -174,7 +169,7 @@ sudo make install
 
 ## Bluetooth
 
-Bluetooth won't work after suspend. To fix this create the script */usr/lib/pm-utils/sleep.d/99bluetooth* to be executed after suspend:
+If bluetooth doesn't work after suspend, create a script */usr/lib/pm-utils/sleep.d/99bluetooth* that is executed after suspend:
 
 ```
  #!/bin/sh
@@ -186,40 +181,6 @@ Bluetooth won't work after suspend. To fix this create the script */usr/lib/pm-u
 ```
 Make it executable with *chmod*
 
-
-## Customize desktop with dconf
-
-open dconf-editor and change
-```
-org.gnome.desktop.interface gtk-theme Pocillo-dark
-org.gnome.desktop.interface icon-theme Pocillo
-org.gnome.desktop.interface cursor-theme Adawita
-org.gnome.desktop.interface cursor-size 48
-org.gnome.desktop.interface scaling-factor 2
-org.gnome.desktop.interface text-scaling-factor 0.9
-net.launchpad.plank.docks.dock1 icon-size 40
-```
-Harmonize with gdm3
-```
-sudo -i
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface gtk-theme Pocillo-dark'
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface icon-theme Pocillo'
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface cursor-theme Adawita'
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface cursor-size 48'
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface scaling-factor 2'
-su gdm -s /bin/sh -c 'dbus-launch gsettings set org.gnome.desktop.interface text-scaling-factor 0.9'
-```
-To check changes
-su gdm -s /bin/sh -c 'dbus-launch gsettings list-recursively org.gnome.desktop.interface'
-
-Edit /usr/share/gnome-shell/theme/gnome-shell.css and modify lockDialogGroup
-``` 
-#lockDialogGroup {
-  background: #2e3436 url(file:///usr/share/backgrounds/Xplo_by_Hugo_Cliff.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center; }
-```
 
 ## Other tweaks and fixes
 
@@ -235,10 +196,7 @@ Touchscreen scrolling in Firefox doesn't work. To fix this add to the file `/etc
 
 `MOZ_USE_XINPUT2 DEFAULT=1`
 
-To avoid double click when single clicking with the touchpad increase `Double click delay` in Settings Universal access
-
-Built-in gnome OSK does not work in Ubuntu Budgie/Xubuntu. Instead install onboard
-
+Install Onboard keyboard and activate it in Lightdm and screensaver
 
 ## Cameras not working
 
