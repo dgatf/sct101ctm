@@ -3,7 +3,7 @@
 This document describes the process to install any Ubuntu flavour 18.04 or higher on Schneider SCT101CTM. It is required a working Linux (or virtual machine) to prepare the bootable USB. It is recommended to install Xubuntu or Lubuntu for best performance
 
 - Wifi, bluetooth, audio and interfaces works out of the box
-- Touchscreen and accelerometer has to be fixed as described below
+- Touchscreen and accelerometer has to be fixed as described below (edit 26/12/2019: patches added to Kernel 5.5 and systemd v244. Only needed for previous versions)
 - Cameras don't work due to atomisp driver. See [bug](https://bugzilla.kernel.org/show_bug.cgi?id=109821)
 
 ## Screenshots (Ubuntu Budgie)
