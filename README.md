@@ -65,6 +65,8 @@ EndSection
 ```
 ## Fix sensor orientation
 
+Edit 26/12/2019: [Patch](https://github.com/systemd/systemd/pull/13810) added to systemd v244. Only needed for previous versions
+
 To fix accelerometer orientation create a udev rule */etc/udev/hwdb.d/61-sensor-local.hwdb*
 ```
 sensor:modalias:acpi:BOSC0200*:dmi:bvnAmericanMegatrendsInc.:bvrSCH12i.WJ210Z.KtBJRCA03*
@@ -87,7 +89,11 @@ Some SD cards are not initialized. If SD card is not initialized with error *mmc
 
 ## Touchscreen driver
 
+
 For the touchscreen it is needed to install the driver and firmware. Thanks to [gsl-firmware](https://github.com/onitake/gsl-firmware) I've ported the firmware to linux. Use files in [touchscreen](touchscreen) folder. There are two open source drivers: gslx680_ts_acpi and silead_ts
+
+Edit 26/12/2019: [Patch](https://patchwork.kernel.org/patch/11207371) added to Kernel 5.5. Only need to copy [kernel firmware](touchscreen/gsl1680-schneider-sct101ctm.fw) to */usr/lib/firmware/silead/*
+
 
 ### gslx680_ts_acpi (the easy way)
 
